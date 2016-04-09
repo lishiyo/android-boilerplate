@@ -69,7 +69,16 @@ public class DataManager {
         return mDatabaseHelper
                 .getRibots()
                 .distinct()
-                .switchIfEmpty(fetchNetworkRibots());
+                .flatMap(ribots -> {
+                    // use flatMap instead of switchIfEmpty to force async query to finish before
+                    // checking if empty
+                    if (ribots.isEmpty()) {
+                        fetchNetworkRibots();
+                    }
+
+                    return Observable.just(ribots);
+                });
+//                .switchIfEmpty(fetchNetworkRibots());
     }
 
 	/**

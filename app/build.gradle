@@ -161,4 +161,5 @@ tasks.matching {it instanceof Test}.all {
 retrolambda {
     oldJdk JAVA7_HOME
     jdk JAVA8_HOME
+    jvmArgs '-noverify'
 }

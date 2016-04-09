@@ -43,7 +43,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // locate the @Inject objects and assign them
         getActivityComponent().inject(this);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -51,7 +53,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mRecyclerView.setAdapter(mRibotsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Init the presenter and register self as view
+        // Init the presenter and register self as presenter's view
         mMainPresenter.attachView(this);
         mMainPresenter.loadRibots();
 

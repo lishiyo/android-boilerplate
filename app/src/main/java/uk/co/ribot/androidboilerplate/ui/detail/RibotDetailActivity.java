@@ -32,7 +32,10 @@ public class RibotDetailActivity extends BaseActivity implements RibotDetailMvpV
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		getActivityComponent().inject(this);
+		// Locate the @Inject objects and assign them
+		getActivityComponent().inject(this);
+
+		// Bind views
 		setContentView(R.layout.activity_ribot_detail);
 		ButterKnife.bind(this);
 
@@ -64,11 +67,11 @@ public class RibotDetailActivity extends BaseActivity implements RibotDetailMvpV
 
 	@Override
 	public void showEmptyRibot() {
-
+		Log.d("connie", "showEmptyRibot for id: " + mRibotId);
 	}
 
 	@Override
-	public void showError() {
+	public void showError(Throwable throwable) {
 
 	}
 }

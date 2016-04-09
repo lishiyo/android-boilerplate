@@ -47,7 +47,7 @@ public class RibotDetailPresenter extends BasePresenter<RibotDetailMvpView> {
 					}
 				}, throwable -> {
 					Timber.e(throwable, "There was an error loading the ribots.");
-					getMvpView().showError();
+					getMvpView().showError(throwable);
 				});
 	}
 

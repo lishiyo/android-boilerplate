@@ -18,13 +18,13 @@ public interface RibotDetailMvpView extends MvpView {
 	void showRibot(final Ribot ribot);
 
 	/**
-	 * Got the ribot but it was empty.
+	 * Successful request for the ribot but it returned empty.
 	 */
 	void showEmptyRibot();
 
 	/**
-	 * Fetch for data failed.
+	 * Request for data failed.
 	 */
-	void showError();
+	void showError(final Throwable throwable);
 
 }
