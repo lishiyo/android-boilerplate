@@ -86,7 +86,7 @@ public class DatabaseHelper {
 	/**
      * Parses all matching rows in RibotProfileTable to {@link Ribot} models.
      *
-     * query => each cursor row => Profile => Ribot from profile
+     * query => each cursor row => Profile => Ribot from profile => toList()
      *
      * @return list of ribots from the db query
      */

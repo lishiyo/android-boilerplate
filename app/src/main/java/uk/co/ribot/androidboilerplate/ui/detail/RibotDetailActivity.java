@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * Created by connieli on 4/9/16.
  */
 public class RibotDetailActivity extends BaseActivity implements RibotDetailMvpView {
-	private final static String EXTRA_RIBOT_ID = "extra_ribot_id";
+	public final static String EXTRA_RIBOT_ID = "extra_ribot_id";
 
 	@Inject
 	RibotDetailPresenter mRibotPresenter;

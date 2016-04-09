@@ -1,5 +1,6 @@
 package uk.co.ribot.androidboilerplate.util;
 
+import android.util.Log;
 import rx.Subscription;
 
 import java.util.List;
@@ -34,6 +35,21 @@ public class RxUtils {
 			if (subscription != null && !subscription.isUnsubscribed()) {
 				subscription.unsubscribe();
 			}
+		}
+	}
+
+	/**
+	 * Log the subscription state, unsubscribe if still subscribe.
+	 * @param subscription
+	 */
+	public static void logSubscriptionState(final String tag, final Subscription subscription) {
+		if (subscription != null && subscription.isUnsubscribed()) {
+			Log.i("connie", tag + ": not null, already unsubscribed");
+		} else if (subscription == null) {
+			Log.i("connie", tag + ": subscription is NULL ");
+		} else {
+			Log.i("connie", tag + ": subscription is not null && still subscribed, unsubscribing...");
+			RxUtils.unsubscribe(subscription);
 		}
 	}
 }
