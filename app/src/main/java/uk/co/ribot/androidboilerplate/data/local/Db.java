@@ -2,16 +2,21 @@ package uk.co.ribot.androidboilerplate.data.local;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-
-import java.util.Date;
-
 import uk.co.ribot.androidboilerplate.data.model.Name;
 import uk.co.ribot.androidboilerplate.data.model.Profile;
 
+import java.util.Date;
+
+/**
+ * Save models to db.
+ */
 public class Db {
 
     public Db() { }
 
+	/**
+     * {@link Profile} table.
+     */
     public abstract static class RibotProfileTable {
         public static final String TABLE_NAME = "ribot_profile";
 

@@ -2,20 +2,18 @@ package uk.co.ribot.androidboilerplate.data.local;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
-
-import java.util.Collection;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
+import uk.co.ribot.androidboilerplate.data.model.Profile;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.Collection;
+import java.util.List;
 
 @Singleton
 public class DatabaseHelper {
@@ -55,6 +53,12 @@ public class DatabaseHelper {
         });
     }
 
+	/**
+     * Set a list of ribots to db, clearing out all old ones.
+     *
+     * @param newRibots
+     * @return
+     */
     public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
         return Observable.create(new Observable.OnSubscribe<Ribot>() {
             @Override
@@ -67,6 +71,7 @@ public class DatabaseHelper {
                         long result = mDb.insert(Db.RibotProfileTable.TABLE_NAME,
                                 Db.RibotProfileTable.toContentValues(ribot.profile),
                                 SQLiteDatabase.CONFLICT_REPLACE);
+                        // successful insert => trigger subscriber
                         if (result >= 0) subscriber.onNext(ribot);
                     }
                     transaction.markSuccessful();
@@ -78,13 +83,23 @@ public class DatabaseHelper {
         });
     }
 
+	/**
+     * Parses all matching rows in RibotProfileTable to {@link Ribot} models.
+     *
+     * query => each cursor row => Profile => Ribot from profile
+     *
+     * @return list of ribots from the db query
+     */
     public Observable<List<Ribot>> getRibots() {
-        return mDb.createQuery(Db.RibotProfileTable.TABLE_NAME,
-                "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME)
+        final String sqlQuery = "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME;
+        return mDb
+                .createQuery(Db.RibotProfileTable.TABLE_NAME, sqlQuery)
                 .mapToList(new Func1<Cursor, Ribot>() {
                     @Override
                     public Ribot call(Cursor cursor) {
-                        return new Ribot(Db.RibotProfileTable.parseCursor(cursor));
+                        // called for each cursor row
+                        final Profile ribotProfile = Db.RibotProfileTable.parseCursor(cursor);
+                        return new Ribot(ribotProfile);
                     }
                 });
     }

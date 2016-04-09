@@ -5,10 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Arrays;
-import java.util.List;
-
 import rx.Observable;
 import rx.observers.TestSubscriber;
 import uk.co.ribot.androidboilerplate.data.DataManager;
@@ -19,10 +15,11 @@ import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
 import uk.co.ribot.androidboilerplate.test.common.TestDataFactory;
 import uk.co.ribot.androidboilerplate.util.EventPosterHelper;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * This test class performs local unit tests without dependencies on the Android framework
@@ -85,9 +82,10 @@ public class DataManagerTest {
     private void stubSyncRibotsHelperCalls(List<Ribot> ribots) {
         // Stub calls to the ribot service and database helper.
         when(mMockRibotsService.getRibots())
-                .thenReturn(Observable.just(ribots));
+                .thenReturn(Observable.just(ribots)); // emit single ribots list
+
         when(mMockDatabaseHelper.setRibots(ribots))
-                .thenReturn(Observable.from(ribots));
+                .thenReturn(Observable.from(ribots)); // emit each item in ribots list
     }
 
 }

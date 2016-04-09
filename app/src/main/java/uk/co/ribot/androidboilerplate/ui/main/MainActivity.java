@@ -47,11 +47,15 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // Init the adapter
         mRecyclerView.setAdapter(mRibotsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Init the presenter and register self as view
         mMainPresenter.attachView(this);
         mMainPresenter.loadRibots();
 
+        // start service to DataManager.syncRibots from retrofit => db
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(SyncService.getStartIntent(this));
         }
@@ -64,7 +68,12 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.detachView();
     }
 
-    /***** MVP View methods implementation *****/
+    @Override
+    public Presenter getPresenter() {
+        return mMainPresenter;
+    }
+
+    /***** MVP View implementation *****/
 
     @Override
     public void showRibots(List<Ribot> ribots) {
@@ -83,10 +92,5 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mRibotsAdapter.setRibots(Collections.<Ribot>emptyList());
         mRibotsAdapter.notifyDataSetChanged();
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public Presenter getPresenter() {
-        return mMainPresenter;
     }
 }

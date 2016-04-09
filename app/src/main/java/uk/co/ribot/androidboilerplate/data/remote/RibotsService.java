@@ -2,9 +2,6 @@ package uk.co.ribot.androidboilerplate.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
-
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
@@ -12,6 +9,11 @@ import retrofit2.http.GET;
 import rx.Observable;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 
+import java.util.List;
+
+/**
+ * Retrofit service for https://api.ribot.io.
+ */
 public interface RibotsService {
 
     String ENDPOINT = "https://api.ribot.io/";

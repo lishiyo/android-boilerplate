@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 import retrofit2.HttpException;
 
-public class NetworkUtil {
+public class NetworkUtils {
 
     /**
      * Returns true if the Throwable is an instance of RetrofitError with an

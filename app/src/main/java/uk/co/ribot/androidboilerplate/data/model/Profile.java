@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
+/**
+ * The Ribot model that gets stored in DB.
+ */
 public class Profile implements Parcelable {
     public Name name;
     public String email;

@@ -12,6 +12,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 
+/**
+ * The "Magic Box" that pools and transforms data from different sources (service, db, sharedprefs, events)
+ * to emit observables that conform to a stable public API.
+ */
 @Singleton
 public class DataManager {
 
@@ -33,16 +37,25 @@ public class DataManager {
         return mPreferencesHelper;
     }
 
+	/**
+     * Fetch ribots from retrofit then save to db, emitting on every insertion.
+     *
+     * @return
+     */
     public Observable<Ribot> syncRibots() {
+        // emits a single Ribot for every successful insertion
         return mRibotsService
                 .getRibots()
                 .concatMap(ribots -> mDatabaseHelper.setRibots(ribots));
     }
 
+	/**
+     * Get ribots from db.
+     * @return
+     */
     public Observable<List<Ribot>> getRibots() {
         return mDatabaseHelper.getRibots().distinct();
     }
-
 
     /// Helper method to post events from doOnCompleted.
     private Action0 postEventAction(final Object event) {

@@ -17,6 +17,9 @@ import java.util.List;
 
 public class RibotsAdapter extends RecyclerView.Adapter<RibotsAdapter.RibotViewHolder> {
 
+	/**
+     * List of presentation models used by {@link MainActivity}
+     */
     private List<Ribot> mRibots;
 
 	/**

@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
-
-import javax.inject.Inject;
-
 import rx.Observer;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -16,7 +13,9 @@ import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.BoilerplateApplication;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.util.AndroidComponentUtil;
-import uk.co.ribot.androidboilerplate.util.NetworkUtil;
+import uk.co.ribot.androidboilerplate.util.NetworkUtils;
+
+import javax.inject.Inject;
 
 public class SyncService extends Service {
 
@@ -37,19 +36,30 @@ public class SyncService extends Service {
         BoilerplateApplication.get(this).getComponent().inject(this);
     }
 
+	/**
+     * Called every time a client starts the service using startService(Intent intent)
+     *
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         Timber.i("Starting sync...");
 
-        if (!NetworkUtil.isNetworkConnected(this)) {
+        if (!NetworkUtils.isNetworkConnected(this)) {
             Timber.i("Sync canceled, connection not available");
             AndroidComponentUtil.toggleComponent(this, SyncOnConnectionAvailable.class, true);
             stopSelf(startId);
             return START_NOT_STICKY;
         }
 
+        // Unsubscribe first
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncRibots()
+
+        mSubscription = mDataManager
+                .syncRibots() // returns single Ribot to onNext
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Ribot>() {
                     @Override
@@ -67,6 +77,7 @@ public class SyncService extends Service {
 
                     @Override
                     public void onNext(Ribot ribot) {
+                        // no op
                     }
                 });
 
@@ -89,7 +100,7 @@ public class SyncService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)
-                    && NetworkUtil.isNetworkConnected(context)) {
+                    && NetworkUtils.isNetworkConnected(context)) {
                 Timber.i("Connection is now available, triggering sync...");
                 AndroidComponentUtil.toggleComponent(context, this.getClass(), false);
                 context.startService(getStartIntent(context));
