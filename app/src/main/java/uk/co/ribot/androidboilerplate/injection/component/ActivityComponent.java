@@ -12,6 +12,5 @@ import uk.co.ribot.androidboilerplate.ui.main.MainActivity;
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 
-    void inject(MainActivity mainActivity);
-
+    void inject(MainActivity activity);
 }

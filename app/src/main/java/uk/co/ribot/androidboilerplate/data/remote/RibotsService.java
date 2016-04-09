@@ -6,6 +6,7 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 
@@ -20,6 +21,9 @@ public interface RibotsService {
 
     @GET("ribots")
     Observable<List<Ribot>> getRibots();
+
+    @GET("ribots/{ribotId}")
+    Observable<Ribot> getSingleRibot(@Path("ribotId") String ribotId);
 
     /******** Helper class that sets up a new services *******/
     class Creator {

@@ -38,9 +38,9 @@ public class DataManager {
     }
 
 	/**
-     * Fetch ribots from retrofit then save to db, emitting on every insertion.
+     * Fetch ribots from retrofit then save to db, emitting the ribot of every successful insertion.
      *
-     * @return
+     * @return single ribot for every insertion
      */
     public Observable<Ribot> syncRibots() {
         // emits a single Ribot for every successful insertion
@@ -50,11 +50,36 @@ public class DataManager {
     }
 
 	/**
-     * Get ribots from db.
-     * @return
+     * Fetch from network and sync to db, returning the network ribots.
+     *
+     * @return the network's ribots
+     */
+    public Observable<List<Ribot>> fetchNetworkRibots() {
+        return mRibotsService
+                .getRibots()
+                .doOnNext(ribots -> mDatabaseHelper.setRibots(ribots));
+    }
+
+	/**
+     * Get ribots from db, or network if necessary.
+     *
+     * @return list of ribots from db
      */
     public Observable<List<Ribot>> getRibots() {
-        return mDatabaseHelper.getRibots().distinct();
+        return mDatabaseHelper
+                .getRibots()
+                .distinct()
+                .switchIfEmpty(fetchNetworkRibots());
+    }
+
+	/**
+	 * Fetch a single Ribot from network.
+     *
+     * @return
+     */
+    public Observable<Ribot> getRibot(final String ribotId) {
+        // TODO: fetch from db first, then only if empty fetch from network
+        return mRibotsService.getSingleRibot(ribotId);
     }
 
     /// Helper method to post events from doOnCompleted.

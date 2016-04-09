@@ -11,15 +11,21 @@ import uk.co.ribot.androidboilerplate.util.RxUtils;
 import javax.inject.Inject;
 
 /**
- * Fetch ribots data from DataManager => transform to presentation models => pass to activity/frag implementing MainMvpView.
+ * MainActivity Presenter:
+ *
+ * fetch ribots data from DataManager
+ *  => transform to presentation models
+ *  => pass to activity/frag implementing MainMvpView
  */
 public class MainPresenter extends BasePresenter<MainMvpView> {
 	/**
      * Magic box of data.
      */
     private final DataManager mDataManager;
-
-    private Subscription mSubscription;
+	/**
+     * Subscription to {@link #mDataManager}.
+     */
+    private Subscription mRibotsSubscription;
 
     @Inject
     public MainPresenter(final DataManager dataManager) {
@@ -31,7 +37,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     public void detachView() {
         super.detachView();
 
-        RxUtils.unsubscribe(mSubscription);
+        RxUtils.unsubscribe(mRibotsSubscription);
     }
 
 	/**
@@ -40,7 +46,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     public void loadRibots() {
         checkViewAttached();
 
-        mSubscription = mDataManager
+        mRibotsSubscription = mDataManager
                 .getRibots() // from db
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
