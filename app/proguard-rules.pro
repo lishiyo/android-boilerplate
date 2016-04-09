@@ -74,3 +74,6 @@
 # http://proguard.sourceforge.net/manual/examples.html#stacktrace
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+
+#Retrolambda
+-dontwarn java.lang.invoke.*

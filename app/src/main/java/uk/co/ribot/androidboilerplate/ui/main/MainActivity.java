@@ -6,19 +6,18 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.SyncService;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
+import uk.co.ribot.androidboilerplate.ui.base.Presenter;
 import uk.co.ribot.androidboilerplate.util.DialogFactory;
+
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
@@ -86,4 +85,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public Presenter getPresenter() {
+        return mMainPresenter;
+    }
 }

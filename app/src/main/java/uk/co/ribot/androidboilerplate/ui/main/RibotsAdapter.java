@@ -6,21 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
 public class RibotsAdapter extends RecyclerView.Adapter<RibotsAdapter.RibotViewHolder> {
 
     private List<Ribot> mRibots;
 
+	/**
+     * Constructor that Dagger should use to create instances of a class
+     */
     @Inject
     public RibotsAdapter() {
         mRibots = new ArrayList<>();

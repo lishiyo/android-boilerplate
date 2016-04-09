@@ -2,12 +2,14 @@ package uk.co.ribot.androidboilerplate.data.local;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
-
+/**
+ * Shared prefs.
+ */
 @Singleton
 public class PreferencesHelper {
 
