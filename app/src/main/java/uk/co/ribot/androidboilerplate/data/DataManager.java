@@ -50,7 +50,7 @@ public class DataManager {
     }
 
 	/**
-     * Fetch from network and sync to db, returning the network ribots.
+     * Fetch from network and save to db, returning the network ribots.
      *
      * @return the network's ribots
      */

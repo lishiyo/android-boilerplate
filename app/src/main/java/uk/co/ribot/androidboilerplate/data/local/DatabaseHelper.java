@@ -6,7 +6,6 @@ import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func1;
 import uk.co.ribot.androidboilerplate.data.model.Profile;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 
@@ -94,13 +93,10 @@ public class DatabaseHelper {
         final String sqlQuery = "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME;
         return mDb
                 .createQuery(Db.RibotProfileTable.TABLE_NAME, sqlQuery)
-                .mapToList(new Func1<Cursor, Ribot>() {
-                    @Override
-                    public Ribot call(Cursor cursor) {
-                        // called for each cursor row
-                        final Profile ribotProfile = Db.RibotProfileTable.parseCursor(cursor);
-                        return new Ribot(ribotProfile);
-                    }
+                .mapToList(cursor -> {
+                    // called for each cursor row
+                    final Profile ribotProfile = Db.RibotProfileTable.parseCursor(cursor);
+                    return new Ribot(ribotProfile);
                 });
     }
 

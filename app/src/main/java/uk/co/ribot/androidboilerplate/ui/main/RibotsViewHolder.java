@@ -1,13 +1,14 @@
 package uk.co.ribot.androidboilerplate.ui.main;
 
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.view.RxView;
 import rx.Observable;
 import rx.Subscription;
@@ -20,11 +21,16 @@ import uk.co.ribot.androidboilerplate.util.RxUtils;
  */
 public class RibotsViewHolder extends RecyclerView.ViewHolder {
 
+//	@Bind(R.id.view_hex_color)
+//	View hexColorView;
 	@Bind(R.id.view_hex_color)
-	View hexColorView;
+	ImageView avatarView;
+
 	@Bind(R.id.text_name)
 	TextView nameTextView;
-	@Bind(R.id.text_email) TextView emailTextView;
+
+	@Bind(R.id.text_email)
+	TextView emailTextView;
 
 	@Nullable
 	private Ribot mRibot;
@@ -58,18 +64,18 @@ public class RibotsViewHolder extends RecyclerView.ViewHolder {
 		itemView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
 			@Override
 			public void onViewAttachedToWindow(final View v) {
-				Log.i("connie", "onViewAttachedToWindow: " + mRibot.profile.name.first);
+				Log.i("connie", "onViewAttachedToWindow: " + getModel().profile.name.first);
 				RxUtils.logSubscriptionState("onViewAttachedToWindow", mSubscription);
 
 				// unsubscribe old subscription and resubscribe
 				mSubscription = mClicksObservable.subscribe(aVoid -> {
-					Log.i("connie", "clicked! mRibot: " + mRibot.profile.name.first);
+					Log.i("connie", "clicked! mRibot: " + getModel().profile.name.first);
 				});
 			}
 
 			@Override
 			public void onViewDetachedFromWindow(final View v) {
-				Log.i("connie", "onViewDetachedFromWindow: " + mRibot.profile.name.first);
+				Log.i("connie", "onViewDetachedFromWindow: " + getModel().profile.name.first);
 				RxUtils.unsubscribe(mSubscription);
 			}
 		});
@@ -78,7 +84,14 @@ public class RibotsViewHolder extends RecyclerView.ViewHolder {
 	public void bindModel(final Ribot ribot) {
 		mRibot = ribot;
 		// bind data to viewholder
-		hexColorView.setBackgroundColor(Color.parseColor(ribot.profile.hexColor));
+//		hexColorView.setBackgroundColor(Color.parseColor(ribot.profile.hexColor));
+
+		Glide.with(avatarView.getContext())
+				.load(ribot.profile.avatar)
+				.centerCrop()
+				.crossFade()
+				.into(avatarView);
+
 		nameTextView.setText(String.format("%s %s",
 				ribot.profile.name.first, ribot.profile.name.last));
 		emailTextView.setText(ribot.profile.email);

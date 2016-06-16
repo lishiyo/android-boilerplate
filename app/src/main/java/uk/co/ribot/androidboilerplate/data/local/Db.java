@@ -35,7 +35,7 @@ public class Db {
                         COLUMN_LAST_NAME + " TEXT NOT NULL, " +
                         COLUMN_HEX_COLOR + " TEXT NOT NULL, " +
                         COLUMN_DATE_OF_BIRTH + " INTEGER NOT NULL, " +
-                        COLUMN_AVATAR + " TEXT NOT NULL, " +
+                        COLUMN_AVATAR + " TEXT, " +
                         COLUMN_BIO + " TEXT" +
                 " ); ";
 
